@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import express from "express";
 import cors from "cors";
 import multer from "multer";
+import serverless from "serverless-http";
 import path from 'path'
 
 const port = 3000;
@@ -19,17 +20,17 @@ app.use(cors({
 
 app.use(express.json());
 
-app.use('/public', express.static(path.join(__dirname, 'public')));
+// app.use('/public', express.static(path.join(__dirname, 'public')));
 
 
 const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, `${__dirname}/public`);
+    destination: function (req, file, cb) {
+      cb(null, '/tmp/'); // O Vercel oferece um diretório temporário '/tmp' para armazenamento
     },
-    filename: function (req, file, cb){
-        cb(null, Date.now() + ".jpg");
-    }
-})
+    filename: function (req, file, cb) {
+      cb(null, Date.now() + '.jpg');
+    },
+  });
 
 const upload = multer({ storage }).single("file");
 
@@ -56,7 +57,7 @@ app.get("/products", async (_, res) => {
     res.status(200).json(products);
 })
 
-app.post("/products", async (req, res) => {
+app.post("/products", async (req, res): Promise<any> => {
     try {
         const { image, title } = req.body;
 
@@ -120,7 +121,7 @@ app.get("/products/:id", async (req, res) => {
     }
 });
 
-app.put("/products/:id", async (req, res) => {
+app.put("/products/:id", async (req, res): Promise<any> => {
     const { id } = req.params;
     const data = { ...req.body };
     const { stars } = req.body;
@@ -152,6 +153,4 @@ app.put("/products/:id", async (req, res) => {
     }
 });
 
-app.listen(port, () => {
-    console.log(`Servidor em execução na porta ${port}`);
-})
+module.exports.handler = serverless(app);
