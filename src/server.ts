@@ -12,7 +12,7 @@ const prisma = new PrismaClient();
 app.use(bodyParser.json());
 
 app.use(cors({
-    origin: ['http://localhost:5173', 'https://books-register.vercel.app/'],
+    origin: '*',
     methods: ['GET', 'POST', 'DELETE', 'PUT'],
     allowedHeaders: ['Content-Type'],
 }));
