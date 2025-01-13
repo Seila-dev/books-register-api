@@ -3,7 +3,6 @@ import bodyParser from "body-parser";
 import express from "express";
 import cors from "cors";
 import multer from "multer";
-import serverless from "serverless-http";
 import path from 'path'
 
 const port = 3000;
@@ -20,17 +19,17 @@ app.use(cors({
 
 app.use(express.json());
 
-// app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, '/tmp/'); // O Vercel oferece um diretório temporário '/tmp' para armazenamento
+    destination: function(req, file, cb) {
+        cb(null, `${__dirname}/public`);
     },
-    filename: function (req, file, cb) {
-      cb(null, Date.now() + '.jpg');
-    },
-  });
+    filename: function (req, file, cb){
+        cb(null, Date.now() + ".jpg");
+    }
+})
 
 const upload = multer({ storage }).single("file");
 
@@ -153,4 +152,8 @@ app.put("/products/:id", async (req, res): Promise<any> => {
     }
 });
 
-module.exports.handler = serverless(app);
+// module.exports.handler = serverless(app);
+
+app.listen(port, () => {
+    console.log(`servidor aberto na porta ${port}`);
+})
