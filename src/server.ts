@@ -3,7 +3,9 @@ import bodyParser from "body-parser";
 import express from "express";
 import cors from "cors";
 import multer from "multer";
-import path from 'path'
+import path from 'path';
+import "dotenv/config"
+import itemsPool from '../DBConfig'
 
 const port = 3000;
 const app = express();
