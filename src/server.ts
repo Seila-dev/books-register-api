@@ -156,4 +156,5 @@ app.put("/products/:id", async (req, res): Promise<any> => {
 
 app.listen(port, () => {
     console.log(`servidor aberto na porta ${port}`);
+    console.log('DATABASE_URL:', process.env.DATABASE_URL);
 })
