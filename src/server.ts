@@ -11,8 +11,6 @@ const prisma = new PrismaClient();
 
 app.use(bodyParser.json());
 
-this.server.use(cors());
-
 app.use(cors())
 
 // app.use(cors({
