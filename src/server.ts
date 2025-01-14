@@ -14,10 +14,10 @@ app.use(bodyParser.json());
 // app.use(cors())
 
 app.use(cors({
-    origin: ['*', 'https://books-register.vercel.app'],  // Allow all origins and your frontend domain
-    methods: ['GET', 'POST', 'DELETE', 'PUT'],  // Allowed HTTP methods
-    allowedHeaders: ['Content-Type', 'Authorization'],  // Allowed headers (add 'Authorization' if using tokens)
-    credentials: true,  // If your app requires sending credentials (cookies, etc.)
+    origin: ['*', 'https://books-register.vercel.app', 'http://localhost:5173/'],
+    methods: ['GET', 'POST', 'DELETE', 'PUT'], 
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true, 
 }));
 
 
