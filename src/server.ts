@@ -25,7 +25,9 @@ app.use(cors({
 
 app.use(express.json());
 
-app.use('/public', express.static(path.join(__dirname, 'public')));
+const publicPath = path.join(process.cwd(), 'public'); // usando process.cwd() ao invés de __dirname
+app.use('/public', express.static(publicPath));
+
 
 
 const storage = multer.diskStorage({
