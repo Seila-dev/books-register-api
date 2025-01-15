@@ -11,7 +11,7 @@ const port = 3000;
 const app = express();
 const prisma = new PrismaClient();
 
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 
 // app.use(cors())
 
@@ -47,6 +47,7 @@ app.post("/upload", function (req, res) {
             return res.status(500).send(err);
         }
 
+        console.log(req.file)
         console.log(req.file?.filename)
 
         return res.status(200).send({ message: "Upload realizado com sucesso" , imagePath: req.file?.filename })
