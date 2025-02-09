@@ -58,7 +58,7 @@ export class ProductsController {
         }
         try {
             const { id } = req.params
-            const { title } = req.body
+            const { title, stars } = req.body
             const filePath = path.join(req.file.filename)
             await prisma.products.update({
                 where: {
@@ -66,6 +66,7 @@ export class ProductsController {
                 },
                 data: {
                     title,
+                    stars,
                     image: filePath
                 }
             })
