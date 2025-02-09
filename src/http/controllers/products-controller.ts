@@ -5,11 +5,11 @@ import { prisma } from "../../prisma"
 export class ProductsController {
     async create(req: Request, res: Response) {
         if (!req.file) {
-            res.status(400).json({ message: 'No file uploaded' });
-            return;
+            res.status(400).json({ message: 'No file uploaded' })
+            return
         }
         try {
-            const filePath = path.join('public', req.file.filename);
+            const filePath = path.join(req.file.filename)
             const { title } = req.body;
 
             const product = await prisma.products.create({
@@ -17,11 +17,11 @@ export class ProductsController {
                     image: filePath,
                     title
                 }
-            });
-            res.status(201).json(product);
+            })
+            res.status(201).json(product)
         } catch (error) {
-            console.log(error);
-            res.status(400).send({ message: "Error on creating product" });
+            console.log(error)
+            res.status(400).send({ message: "Error on creating product" })
         }
     }
 
@@ -31,39 +31,39 @@ export class ProductsController {
                 orderBy: {
                     title: "asc"
                 }
-            });
-            res.status(200).json(products);
+            })
+            res.status(200).json(products)
         } catch (error) {
-            console.log(error);
-            res.status(400).send({ message: "Server Error" });
+            console.log(error)
+            res.status(400).send({ message: "Server Error" })
         }
     }
 
     async delete(req: Request, res: Response) {
         try {
-            const { id } = req.params;
+            const { id } = req.params
             await prisma.products.delete({
                 where: {
                     id: Number(id)
                 }
-            });
-            res.status(200).send({ message: "Product deleted" });
+            })
+            res.status(200).send({ message: "Product deleted" })
         } catch (error) {
-            console.log(error);
-            res.status(400).send({ message: "Error on delete product" });
+            console.log(error)
+            res.status(400).send({ message: "Error on delete product" })
         }
     }
 
     async update(req: Request, res: Response) {
         try {
-            const { id } = req.params;
-            const { title, stars } = req.body;
+            const { id } = req.params
+            const { title, stars } = req.body
 
-            const updateData: any = { title, stars };
+            const updateData: any = { title, stars }
 
             if (req.file) {
-                const filePath = path.join('public', req.file.filename);
-                updateData.image = filePath;
+                const filePath = path.join(req.file.filename)
+                updateData.image = filePath
             }
 
             await prisma.products.update({
@@ -73,10 +73,10 @@ export class ProductsController {
                 data: updateData 
             });
 
-            res.status(200).send({ message: "Product updated" });
+            res.status(200).send({ message: "Product updated" })
         } catch (error) {
-            console.log(error);
-            res.status(400).send({ message: "Error on update product" });
+            console.log(error)
+            res.status(400).send({ message: "Error on update product" })
         }
     }
 
@@ -90,8 +90,8 @@ export class ProductsController {
             });
             res.status(200).json(product);
         } catch (error) {
-            console.log(error);
-            res.status(400).send({ message: "Error on find product" });
+            console.log(error)
+            res.status(400).send({ message: "Error on find product" })
         }
     }
 }
