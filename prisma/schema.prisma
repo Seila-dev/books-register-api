@@ -9,11 +9,21 @@ datasource db {
 
 model products {
   id             Int     @id @default(autoincrement())
-  image          String?  @db.VarChar(200)
+  image          String? @db.VarChar(200)
   title          String  @db.VarChar(50)
   stars          Int?
   genre_id       Int?
   description    String?
   startedreading String? @db.VarChar(30)
   endedreading   String? @db.VarChar(30)
+  userid         Int?
+  users          users?  @relation(fields: [userid], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user")
+}
+
+model users {
+  id       Int        @id @default(autoincrement())
+  name     String?    @db.VarChar(100)
+  email    String?    @db.VarChar(100)
+  password String?    @db.VarChar(30)
+  products products[]
 }

@@ -11,7 +11,7 @@ const port = 3000;
 const app = express();
 const prisma = new PrismaClient();
 
-// app.use(bodyParser.json());
+app.use(bodyParser.json());
 
 // app.use(cors())
 
@@ -25,9 +25,8 @@ app.use(cors({
 
 app.use(express.json());
 
-const publicPath = path.join(process.cwd(), 'public'); // usando process.cwd() ao invés de __dirname
+const publicPath = path.join(process.cwd(), 'public'); 
 app.use('/public', express.static(publicPath));
-
 
 
 const storage = multer.diskStorage({
@@ -49,7 +48,6 @@ app.post("/upload", function (req, res) {
             return res.status(500).send(err);
         }
 
-        console.log(req.file)
         console.log(req.file?.filename)
 
         return res.status(200).send({ message: "Upload realizado com sucesso" , imagePath: req.file?.filename })
