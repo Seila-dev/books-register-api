@@ -52,28 +52,29 @@ export class ProductsController {
         }
     }
     async update(req: Request, res: Response) {
-        if (!req.file) {
-            res.status(400).json({ message: 'No file uploaded' });
-            return
-        }
         try {
-            const { id } = req.params
-            const { title, stars } = req.body
-            const filePath = path.join(req.file.filename)
+            const { id } = req.params;
+            const { title, stars } = req.body;
+    
+            const updateData: any = { title, stars }; // Garantir que title e stars sejam sempre passados
+    
+            if (req.file) {
+                // Se houver um arquivo, adiciona a imagem ao objeto de dados
+                const filePath = path.join(req.file.filename);
+                updateData.image = filePath;
+            }
+    
             await prisma.products.update({
                 where: {
                     id: Number(id)
                 },
-                data: {
-                    title,
-                    stars,
-                    image: filePath
-                }
-            })
-            res.status(200).send({ message: "Product updated" })
+                data: updateData // Atualiza com ou sem imagem, dependendo da requisição
+            });
+    
+            res.status(200).send({ message: "Product updated" });
         } catch (error) {
-            console.log(error)
-            res.status(400).send({ message: "Error on update product" })
+            console.log(error);
+            res.status(400).send({ message: "Error on update product" });
         }
     }
     async findProduct(req: Request, res: Response) {
