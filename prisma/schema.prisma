@@ -7,23 +7,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model products {
+model Genre {
+  id        Int      @id @default(autoincrement())
+  name      String
+  products  Product[]
+
+  @@map("genres")
+}
+
+model Product {
   id             Int     @id @default(autoincrement())
-  image          String? @db.VarChar(200)
-  title          String  @db.VarChar(50)
+  image          String? 
+  title          String 
   stars          Int?
-  genre_id       Int?
+  genreId        Int? @map("genre_id")
   description    String?
-  startedreading String? @db.VarChar(30)
-  endedreading   String? @db.VarChar(30)
+  startedreading String?
+  endedreading   String?
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @default(now()) @updatedAt @map("updated_at")
   userid         Int?
-  users          users?  @relation(fields: [userid], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user")
+  users          users?  @relation(fields: [userid], references: [id], map: "fk_user")
+  genres     Genre? @relation(fields: [genreId], references: [id], map: "fk_categories")
+
+  @@map("products")
 }
 
 model users {
-  id       Int        @id @default(autoincrement())
-  name     String?    @db.VarChar(100)
-  email    String?    @db.VarChar(100)
-  password String?    @db.VarChar(30)
-  products products[]
+  id            Int        @id @default(autoincrement())
+  name          String?    
+  email         String?    
+  passwordHash  String?    
+  products      Product[]
 }

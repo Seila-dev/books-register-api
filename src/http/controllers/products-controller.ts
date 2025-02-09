@@ -56,10 +56,9 @@ export class ProductsController {
             const { id } = req.params;
             const { title, stars } = req.body;
     
-            const updateData: any = { title, stars }; // Garantir que title e stars sejam sempre passados
+            const updateData: any = { title, stars };
     
             if (req.file) {
-                // Se houver um arquivo, adiciona a imagem ao objeto de dados
                 const filePath = path.join(req.file.filename);
                 updateData.image = filePath;
             }
@@ -68,7 +67,7 @@ export class ProductsController {
                 where: {
                     id: Number(id)
                 },
-                data: updateData // Atualiza com ou sem imagem, dependendo da requisição
+                data: updateData 
             });
     
             res.status(200).send({ message: "Product updated" });
