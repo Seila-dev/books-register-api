@@ -25,16 +25,16 @@ app.use(cors({
 
 app.use(express.json());
 
-const publicPath = path.join(process.cwd(), 'public'); 
-app.use('/public', express.static(publicPath));
+const publicPath = path.join(process.cwd(), 'uploads'); 
+app.use('/uploads', express.static(publicPath));
 
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, `${__dirname}/public`);
+        cb(null, `./uploads`);
     },
     filename: function (req, file, cb){
-        cb(null, Date.now() + ".jpg");
+        cb(null, file.originalname);
     }
 })
 
