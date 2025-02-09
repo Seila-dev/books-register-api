@@ -7,8 +7,8 @@ import productsRoutes from "./routes/products-routes";
 
 const port = 3000;
 
-const publicPath = path.join(process.cwd(), 'uploads'); 
-app.use('/uploads', express.static(publicPath));
+const publicPath = path.join(process.cwd(), 'public'); 
+app.use('/public', express.static(publicPath));
 
 app.use('/products', productsRoutes)
 
