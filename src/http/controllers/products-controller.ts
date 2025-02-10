@@ -97,4 +97,21 @@ export class ProductsController {
             res.status(400).send({ message: "Error on find product" })
         }
     }
+    async findCategories(req: Request, res: Response) {
+        try {
+            const { id } = req.params
+            const product = await prisma.product.findFirst({
+                where: {
+                    id: Number(id)
+                },
+                include: {
+                    genres: true
+                }
+            })
+            res.status(200).json(product)
+        } catch (error) {
+            console.log(error)
+            res.status(400).send({ message: "Error on find categories" })
+        }
+    }
 }

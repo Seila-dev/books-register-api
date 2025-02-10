@@ -22,5 +22,6 @@ productsRoutes.delete("/:id", new ProductsController().delete)
 productsRoutes.put("/:id", upload.single('file'), (req, res) => {
     new ProductsController().update(req, res);
 })
+productsRoutes.get("/:id/categories", new ProductsController().findCategories)
 
 export default productsRoutes
