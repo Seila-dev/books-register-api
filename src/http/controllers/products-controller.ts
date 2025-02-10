@@ -114,4 +114,44 @@ export class ProductsController {
             res.status(400).send({ message: "Error on find categories" })
         }
     }
+    async addCategory(req: Request, res: Response) {
+        try {
+            const { id } = req.params
+            const { genreId } = req.body
+            const product = await prisma.product.findFirst({
+                where: {
+                    id: Number(id)
+                }
+            })
+            if (!product) {
+                res.status(400).send({ message: "Product not found" })
+                return
+            }
+            const genre = await prisma.genre.findFirst({
+                where: {
+                    id: Number(genreId)
+                }
+            })
+            if (!genre) {
+                res.status(400).send({ message: "Genre not found" })
+                return
+            }
+            await prisma.product.update({
+                where: {
+                    id: Number(id)
+                },
+                data: {
+                    genres: {
+                        connect: {
+                            id: Number(genreId)
+                        }
+                    }
+                }
+            })
+            res.status(200).send({ message: "Category added" })
+        } catch (error) {
+            console.log(error)
+            res.status(400).send({ message: "Error on add category" })
+        }
+    }
 }
