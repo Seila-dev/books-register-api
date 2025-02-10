@@ -122,31 +122,37 @@ export class ProductsController {
     }
     async addCategory(req: Request, res: Response) {
         try {
-            const { id } = req.params;
-            const { genreId } = req.body;
-
+            const { id } = req.params;  // ID do produto
+            const { name } = req.body;  // Nome da nova categoria
+    
+            // Verifica se o produto existe
             const product = await prisma.product.findUnique({
                 where: {
                     id: Number(id)
                 }
-            })
+            });
     
             if (!product) {
-                res.status(400).send({ message: "Product not found" });
-                return
+                return res.status(400).send({ message: "Product not found" });
             }
     
-            const genre = await prisma.genre.findUnique({
+            // Verifica se a categoria já existe
+            let category = await prisma.genre.findFirst({
                 where: {
-                    id: Number(genreId)
+                    name: name
                 }
             });
     
-            if (!genre) {
-                res.status(400).send({ message: "Genre not found" });
-                return
+            // Se não existir, cria a categoria
+            if (!category) {
+                category = await prisma.genre.create({
+                    data: {
+                        name: name
+                    }
+                });
             }
     
+            // Conecta o produto à categoria (gênero)
             await prisma.product.update({
                 where: {
                     id: Number(id)
@@ -154,17 +160,18 @@ export class ProductsController {
                 data: {
                     genres: {
                         connect: {
-                            id: Number(genreId)
+                            id: category.id
                         }
                     }
                 }
             });
     
-            res.status(200).send({ message: "Category added to product" });
+            res.status(200).send({ message: "Category added to product", category });
         } catch (error) {
             console.log(error);
             res.status(400).send({ message: "Error on add category" });
         }
     }
+    
     
 }
