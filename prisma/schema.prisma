@@ -25,7 +25,7 @@ model Product {
   startedreading String? 
   endedreading String?
   updatedAt   DateTime @updatedAt @map("updated_at")
-  genreId  Int?      @map("category_id")
+  genreId  Int?      @map("genre_id")
   genres  Genre? @relation(fields: [genreId], references: [id], map: "fk_genres")
 
 
