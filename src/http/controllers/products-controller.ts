@@ -60,9 +60,9 @@ export class ProductsController {
     async update(req: Request, res: Response) {
         try {
             const { id } = req.params
-            const { title, stars, description, startedreading, endedreading, genres, genreId } = req.body
+            const { title, stars, description, startedreading, endedreading, genres } = req.body
 
-            const updateData: any = { title, stars, description, startedreading, endedreading, genres, genreId }
+            const updateData: any = { title, stars, description, startedreading, endedreading, genres }
 
             if (req.file) {
                 const filePath = path.join(req.file.filename)
@@ -100,7 +100,7 @@ export class ProductsController {
     async findCategories(req: Request, res: Response) {
         try {
             const { id } = req.params
-            const product = await prisma.product.findFirst({
+            const product = await prisma.product.findUnique({
                 where: {
                     id: Number(id)
                 },
@@ -108,6 +108,12 @@ export class ProductsController {
                     genres: true
                 }
             })
+
+            if (!product) {
+                res.status(400).send({ message: "Product not found" })
+                return
+            }
+
             res.status(200).json(product)
         } catch (error) {
             console.log(error)
@@ -116,26 +122,31 @@ export class ProductsController {
     }
     async addCategory(req: Request, res: Response) {
         try {
-            const { id } = req.params
-            const { genreId } = req.body
-            const product = await prisma.product.findFirst({
+            const { id } = req.params;
+            const { genreId } = req.body;
+
+            const product = await prisma.product.findUnique({
                 where: {
                     id: Number(id)
                 }
             })
+    
             if (!product) {
-                res.status(400).send({ message: "Product not found" })
+                res.status(400).send({ message: "Product not found" });
                 return
             }
-            const genre = await prisma.genre.findFirst({
+    
+            const genre = await prisma.genre.findUnique({
                 where: {
                     id: Number(genreId)
                 }
-            })
+            });
+    
             if (!genre) {
-                res.status(400).send({ message: "Genre not found" })
+                res.status(400).send({ message: "Genre not found" });
                 return
             }
+    
             await prisma.product.update({
                 where: {
                     id: Number(id)
@@ -147,11 +158,13 @@ export class ProductsController {
                         }
                     }
                 }
-            })
-            res.status(200).send({ message: "Category added" })
+            });
+    
+            res.status(200).send({ message: "Category added to product" });
         } catch (error) {
-            console.log(error)
-            res.status(400).send({ message: "Error on add category" })
+            console.log(error);
+            res.status(400).send({ message: "Error on add category" });
         }
     }
+    
 }

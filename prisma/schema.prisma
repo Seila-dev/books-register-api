@@ -10,7 +10,7 @@ datasource db {
 model Genre {
   id       Int       @id @default(autoincrement())
   name     String
-  products Product[]
+  products Product[]  @relation("ProductGenres")
 
   @@map("genres")
 }
@@ -25,8 +25,7 @@ model Product {
   startedreading String? 
   endedreading String?
   updatedAt   DateTime @updatedAt @map("updated_at")
-  genreId  Int?      @map("genre_id")
-  genres  Genre? @relation(fields: [genreId], references: [id], map: "fk_genres")
+  genres  Genre[] @relation("ProductGenres")
 
 
   @@map("products")
