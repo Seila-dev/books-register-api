@@ -6,7 +6,7 @@ export class CategoriesController {
         try {
             const { name } = req.body
             
-            const categoryAlreadyExist = await prisma.category.findFirst({
+            const categoryAlreadyExist = await prisma.category.findUnique({
                 where: { name }
             })
             
