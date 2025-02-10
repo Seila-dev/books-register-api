@@ -16,7 +16,7 @@ model Category {
 }
 
 model Product {
-  id             Int         @id @default(autoincrement())
+  id             Int       @id @default(autoincrement())
   image          String?
   title          String
   stars          Int?
@@ -24,11 +24,11 @@ model Product {
   startedreading String?
   endedreading   String?
   userid         Int?
-  createdAt      DateTime    @default(now()) @map("created_at")
-  updatedAt      DateTime    @default(now()) @updatedAt @map("updated_at")
-  categoryId     Int?        @map("category_id")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @default(now()) @updatedAt @map("updated_at")
+  categoryId     Int?      @map("category_id")
   categories     Category? @relation(fields: [categoryId], references: [id], map: "fk_categories")
-  users          users?      @relation(fields: [userid], references: [id], map: "fk_user")
+  users          users?    @relation(fields: [userid], references: [id], map: "fk_user")
 
   @@map("products")
 }
