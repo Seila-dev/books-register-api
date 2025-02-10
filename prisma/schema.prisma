@@ -9,34 +9,38 @@ datasource db {
 
 model Category {
   id       Int       @id @default(autoincrement())
-  name     String    @unique
+  name     String
   products Product[]
 
   @@map("categories")
 }
 
 model Product {
-  id             Int       @id @default(autoincrement())
-  image          String?
-  title          String
-  stars          Int?
-  description    String?
-  startedreading String?
-  endedreading   String?
-  userid         Int?
-  createdAt      DateTime  @default(now()) @map("created_at")
-  updatedAt      DateTime  @default(now()) @updatedAt @map("updated_at")
-  categoryId     Int?      @map("category_id")
-  categories     Category? @relation(fields: [categoryId], references: [id], map: "fk_categories")
-  users          users?    @relation(fields: [userid], references: [id], map: "fk_user")
+  id          Int      @id @default(autoincrement())
+  title       String
+  image       String
+  stars       Int?
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  startedreading String? 
+  endedreading String?
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  categoryId  Int?      @map("category_id")
+  categories  Category? @relation(fields: [categoryId], references: [id], map: "fk_categories")
+
 
   @@map("products")
 }
 
-model users {
-  id           Int       @id @default(autoincrement())
-  name         String?
-  email        String?
-  passwordHash String?
-  products     Product[]
+
+model User {
+  id           Int  @id @default(autoincrement())
+  email        String @unique
+  firstName    String @map("first_name")
+  lastName     String @map("last_name")
+  passwordHash String @map("password_hash")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
 }
