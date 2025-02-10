@@ -5,6 +5,7 @@ const categoriesRoutes = Router()
 
 categoriesRoutes.post("/", new CategoriesController().create)
 categoriesRoutes.get("/", new CategoriesController().findAll)
+categoriesRoutes.get("/:id", new CategoriesController().findCategory)
 categoriesRoutes.delete("/:id", new CategoriesController().delete)
 categoriesRoutes.put("/:id", new CategoriesController().update)
 

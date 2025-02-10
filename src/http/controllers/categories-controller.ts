@@ -42,6 +42,20 @@ export class CategoriesController {
             res.status(400).send({ message: "Server Error" })
         }
     }
+    async findCategory(req: Request, res: Response) {
+        try {
+            const { id } = req.params
+            const category = await prisma.genre.findFirst({
+                where: {
+                    id: Number(id)
+                }
+            })
+            res.status(200).json(category)
+        } catch (error) {
+            console.log(error)
+            res.status(400).send({ message: "Error on find category" })
+        }
+    }
     
     async delete(req: Request, res: Response) {
         try {
