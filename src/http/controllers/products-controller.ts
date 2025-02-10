@@ -12,7 +12,7 @@ export class ProductsController {
             const filePath = path.join(req.file.filename)
             const { title } = req.body;
 
-            const product = await prisma.products.create({
+            const product = await prisma.product.create({
                 data: {
                     image: filePath,
                     title
@@ -27,7 +27,7 @@ export class ProductsController {
 
     async findAll(req: Request, res: Response) {
         try {
-            const products = await prisma.products.findMany({
+            const products = await prisma.product.findMany({
                 orderBy: {
                     title: "asc"
                 },
@@ -45,7 +45,7 @@ export class ProductsController {
     async delete(req: Request, res: Response) {
         try {
             const { id } = req.params
-            await prisma.products.delete({
+            await prisma.product.delete({
                 where: {
                     id: Number(id)
                 }
@@ -69,7 +69,7 @@ export class ProductsController {
                 updateData.image = filePath
             }
 
-            await prisma.products.update({
+            await prisma.product.update({
                 where: {
                     id: Number(id)
                 },
@@ -86,7 +86,7 @@ export class ProductsController {
     async findProduct(req: Request, res: Response) {
         try {
             const { id } = req.params;
-            const product = await prisma.products.findFirst({
+            const product = await prisma.product.findFirst({
                 where: {
                     id: Number(id)
                 }
