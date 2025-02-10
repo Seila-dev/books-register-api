@@ -7,34 +7,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model categories {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
-  products  Product[]
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  products Product[]
+
+  @@map("categories")
 }
 
 model Product {
-  id                 Int     @id @default(autoincrement())
-  image              String? 
-  title              String 
-  stars              Int?
-  categoryId         Int? @map("category_id")
-  description        String?
-  startedreading     String?
-  endedreading       String?
-  createdAt          DateTime @default(now()) @map("created_at")
-  updatedAt          DateTime @default(now()) @updatedAt @map("updated_at")
-  userid             Int?
-  users              users?  @relation(fields: [userid], references: [id], map: "fk_user")
-  categories         categories? @relation(fields: [categoryId], references: [id], map: "fk_categories")
+  id             Int         @id @default(autoincrement())
+  image          String?
+  title          String
+  stars          Int?
+  description    String?
+  startedreading String?
+  endedreading   String?
+  userid         Int?
+  createdAt      DateTime    @default(now()) @map("created_at")
+  updatedAt      DateTime    @default(now()) @updatedAt @map("updated_at")
+  categoryId     Int?        @map("category_id")
+  categories     Category? @relation(fields: [categoryId], references: [id], map: "fk_categories")
+  users          users?      @relation(fields: [userid], references: [id], map: "fk_user")
 
   @@map("products")
 }
 
 model users {
-  id            Int        @id @default(autoincrement())
-  name          String?    
-  email         String?    
-  passwordHash  String?    
-  products      Product[]
+  id           Int       @id @default(autoincrement())
+  name         String?
+  email        String?
+  passwordHash String?
+  products     Product[]
 }
