@@ -12,7 +12,7 @@ export class ProductsController {
             const filePath = path.join(req.file.filename)
             const { title } = req.body;
 
-            const product = await prisma.products.create({
+            const product = await prisma.product.create({
                 data: {
                     image: filePath,
                     title
@@ -27,9 +27,12 @@ export class ProductsController {
 
     async findAll(req: Request, res: Response) {
         try {
-            const products = await prisma.products.findMany({
+            const products = await prisma.product.findMany({
                 orderBy: {
                     title: "asc"
+                },
+                include: {
+                    categories: true,
                 }
             })
             res.status(200).json(products)
@@ -42,7 +45,7 @@ export class ProductsController {
     async delete(req: Request, res: Response) {
         try {
             const { id } = req.params
-            await prisma.products.delete({
+            await prisma.product.delete({
                 where: {
                     id: Number(id)
                 }
@@ -57,16 +60,16 @@ export class ProductsController {
     async update(req: Request, res: Response) {
         try {
             const { id } = req.params
-            const { title, stars, description, startedreading, endedreading, genres, genreId } = req.body
+            const { title, stars, description, startedreading, endedreading, categories, categoriesId } = req.body
 
-            const updateData: any = { title, stars, description, startedreading, endedreading, genres, genreId }
+            const updateData: any = { title, stars, description, startedreading, endedreading, categories, categoriesId }
 
             if (req.file) {
                 const filePath = path.join(req.file.filename)
                 updateData.image = filePath
             }
 
-            await prisma.products.update({
+            await prisma.product.update({
                 where: {
                     id: Number(id)
                 },
@@ -83,7 +86,7 @@ export class ProductsController {
     async findProduct(req: Request, res: Response) {
         try {
             const { id } = req.params;
-            const product = await prisma.products.findFirst({
+            const product = await prisma.product.findFirst({
                 where: {
                     id: Number(id)
                 }
