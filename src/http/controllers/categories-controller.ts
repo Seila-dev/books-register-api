@@ -6,7 +6,7 @@ export class CategoriesController {
         try {
             const { name } = req.body
             
-            const categoryAlreadyExist = await prisma.category.findFirst({
+            const categoryAlreadyExist = await prisma.genre.findFirst({
                 where: { name }
             })
             
@@ -16,7 +16,7 @@ export class CategoriesController {
                 return
             }
 
-            const category = await prisma.category.create({
+            const category = await prisma.genre.create({
                 data: {
                     name
                 }
@@ -31,7 +31,7 @@ export class CategoriesController {
     }
     async findAll(req: Request, res: Response) {
         try {
-            const categories = await prisma.category.findMany({
+            const categories = await prisma.genre.findMany({
                 orderBy: {
                     name: "asc"
                 }
@@ -46,7 +46,7 @@ export class CategoriesController {
     async delete(req: Request, res: Response) {
         try {
             const { id } = req.params
-            await prisma.category.delete({
+            await prisma.genre.delete({
                 where: {
                     id: Number(id)
                 }
@@ -62,7 +62,7 @@ export class CategoriesController {
         try {
             const { id } = req.params
             const { name } = req.body
-            const categoryAlreadyExist = await prisma.category.findFirst({
+            const categoryAlreadyExist = await prisma.genre.findFirst({
                 where: { 
                     name: {
                         equals: name,
@@ -76,7 +76,7 @@ export class CategoriesController {
                 return
             }
 
-            const category = await prisma.category.update({
+            const category = await prisma.genre.update({
                 where: {
                     id: Number(id)
                 },

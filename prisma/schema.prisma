@@ -7,12 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Category {
+model Genre {
   id       Int       @id @default(autoincrement())
   name     String
   products Product[]
 
-  @@map("categories")
+  @@map("genres")
 }
 
 model Product {
@@ -25,8 +25,8 @@ model Product {
   startedreading String? 
   endedreading String?
   updatedAt   DateTime @updatedAt @map("updated_at")
-  categoryId  Int?      @map("category_id")
-  categories  Category? @relation(fields: [categoryId], references: [id], map: "fk_categories")
+  genreId  Int?      @map("category_id")
+  genres  Genre? @relation(fields: [genreId], references: [id], map: "fk_genres")
 
 
   @@map("products")

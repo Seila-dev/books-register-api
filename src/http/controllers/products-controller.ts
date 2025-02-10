@@ -32,7 +32,7 @@ export class ProductsController {
                     title: "asc"
                 },
                 include: {
-                    categories: true,
+                    genres: true,
                 }
             })
             res.status(200).json(products)
@@ -60,9 +60,9 @@ export class ProductsController {
     async update(req: Request, res: Response) {
         try {
             const { id } = req.params
-            const { title, stars, description, startedreading, endedreading, categories, categoriesId } = req.body
+            const { title, stars, description, startedreading, endedreading, genres, genreId } = req.body
 
-            const updateData: any = { title, stars, description, startedreading, endedreading, categories, categoriesId }
+            const updateData: any = { title, stars, description, startedreading, endedreading, genres, genreId }
 
             if (req.file) {
                 const filePath = path.join(req.file.filename)
