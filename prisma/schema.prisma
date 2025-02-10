@@ -7,28 +7,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Genre {
+model Category {
   id        Int      @id @default(autoincrement())
-  name      String
+  name      String   @unique
   products  Product[]
 
-  @@map("genres")
+  @@map("categories")
 }
 
 model Product {
-  id             Int     @id @default(autoincrement())
-  image          String? 
-  title          String 
-  stars          Int?
-  genreId        Int? @map("genre_id")
-  description    String?
-  startedreading String?
-  endedreading   String?
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @default(now()) @updatedAt @map("updated_at")
-  userid         Int?
-  users          users?  @relation(fields: [userid], references: [id], map: "fk_user")
-  genres     Genre? @relation(fields: [genreId], references: [id], map: "fk_categories")
+  id                 Int     @id @default(autoincrement())
+  image              String? 
+  title              String 
+  stars              Int?
+  categoryId         Int? @map("category_id")
+  description        String?
+  startedreading     String?
+  endedreading       String?
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @default(now()) @updatedAt @map("updated_at")
+  userid             Int?
+  users              users?  @relation(fields: [userid], references: [id], map: "fk_user")
+  categories         Category? @relation(fields: [categoryId], references: [id], map: "fk_categories")
 
   @@map("products")
 }
