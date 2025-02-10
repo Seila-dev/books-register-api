@@ -57,9 +57,9 @@ export class ProductsController {
     async update(req: Request, res: Response) {
         try {
             const { id } = req.params
-            const { title, stars, description, startedreading, endedreading } = req.body
+            const { title, stars, description, startedreading, endedreading, genres, genreId } = req.body
 
-            const updateData: any = { title, stars, description, startedreading, endedreading }
+            const updateData: any = { title, stars, description, startedreading, endedreading, genres, genreId }
 
             if (req.file) {
                 const filePath = path.join(req.file.filename)
