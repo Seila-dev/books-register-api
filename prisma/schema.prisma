@@ -7,12 +7,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Category {
+model categories {
   id        Int      @id @default(autoincrement())
   name      String   @unique
   products  Product[]
-
-  @@map("categories")
 }
 
 model Product {
@@ -28,7 +26,7 @@ model Product {
   updatedAt          DateTime @default(now()) @updatedAt @map("updated_at")
   userid             Int?
   users              users?  @relation(fields: [userid], references: [id], map: "fk_user")
-  categories         Category? @relation(fields: [categoryId], references: [id], map: "fk_categories")
+  categories         categories? @relation(fields: [categoryId], references: [id], map: "fk_categories")
 
   @@map("products")
 }
