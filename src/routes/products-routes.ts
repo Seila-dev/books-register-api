@@ -25,4 +25,4 @@ productsRoutes.put("/:id", upload.single('file'), (req, res) => {
 // productsRoutes.get("/:id/categories", new ProductsController().findCategories)
 // productsRoutes.post("/:id/categories", new ProductsController().addCategory)
 
-export default productsRoutes
+export default productsRoutes;
