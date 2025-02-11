@@ -27,13 +27,18 @@ export class ProductsController {
 
     async findAll(_: Request, res: Response) {
         try {
-            const productsContainer = await prisma.product.findMany()
-            res.status(200).json(productsContainer)
+            const productsContainer = await prisma.product.findMany({
+                include: {
+                    genres: true, // Inclui as categorias associadas a cada produto
+                }
+            });
+            res.status(200).json(productsContainer);
         } catch (error) {
-            console.log(error)
-            res.status(400).send({ message: "Server Error" })
+            console.log(error);
+            res.status(400).send({ message: "Server Error" });
         }
     }
+    
 
     async delete(req: Request, res: Response) {
         try {
