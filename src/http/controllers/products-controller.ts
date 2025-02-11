@@ -171,7 +171,7 @@ export class ProductsController {
                 },
                 data: {
                     genres: {
-                        connect: genresToConnect
+                        connect: genresToConnect  // Adiciona todos os gêneros de uma vez
                     }
                 }
             });
@@ -182,6 +182,7 @@ export class ProductsController {
             res.status(400).send({ message: "Error on add categories" });
         }
     }
+    
     
     
     
