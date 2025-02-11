@@ -103,22 +103,22 @@ export class ProductsController {
     async findCategories(req: Request, res: Response) {
         try {
             const { id } = req.params;
-    
+
             const product = await prisma.product.findUnique({
                 where: {
                     id: Number(id)
                 },
                 include: {
-                    genres: true  // Inclui todos os gêneros associados ao produto
+                    genres: true
                 }
-            });
-    
-            if (!product) {
-                res.status(400).send({ message: "Produto não encontrado" });
-                return;
+            })
+
+            if(!product) {
+                res.status(400).send({ message: "Product not found" });
+                return
             }
-    
-            res.status(200).json(product.genres);  // Retorna todos os gêneros do produto
+
+            res.status(200).json(product.genres);
         } catch (error) {
             console.log(error);
             res.status(400).send({ message: "Erro ao buscar gêneros" });
@@ -176,7 +176,7 @@ export class ProductsController {
                 }
             });
         
-            res.status(200).send({ message: "Categories added to product", genresToConnect });
+            res.status(200).json(genresToConnect);
         } catch (error) {
             console.log(error);
             res.status(400).send({ message: "Error on add categories" });
