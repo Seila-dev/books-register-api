@@ -10,35 +10,33 @@ datasource db {
 model Genre {
   id       Int       @id @default(autoincrement())
   name     String
-  products Product[]  @relation("ProductGenres")
+  products Product[] @relation("ProductGenres")
 
   @@map("genres")
 }
 
 model Product {
-  id          Int      @id @default(autoincrement())
-  title       String
-  image       String
-  stars       Int?
-  description String?
-  createdAt   DateTime @default(now()) @map("created_at")
-  startedreading String? 
-  endedreading String?
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  genres  Genre[] @relation("ProductGenres")
-
+  id             Int      @id @default(autoincrement())
+  image          String
+  title          String
+  stars          Int?
+  description    String?
+  startedreading String?
+  endedreading   String?
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+  genres         Genre[]  @relation("ProductGenres")
 
   @@map("products")
 }
 
-
 model User {
-  id           Int  @id @default(autoincrement())
-  email        String @unique
-  firstName    String @map("first_name")
-  lastName     String @map("last_name")
-  passwordHash String @map("password_hash")
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
   createdAt    DateTime @default(now()) @map("created_at")
+  firstName    String   @map("first_name")
+  lastName     String   @map("last_name")
+  passwordHash String   @map("password_hash")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
   @@map("users")
