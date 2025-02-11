@@ -133,7 +133,8 @@ export class ProductsController {
             });
     
             if (!product) {
-                return res.status(400).send({ message: "Product not found" });
+                res.status(400).send({ message: "Product not found" });
+                return
             }
     
             // Verifica se a categoria já existe
