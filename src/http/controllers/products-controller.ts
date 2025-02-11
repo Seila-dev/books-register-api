@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import path from 'path'
 import { prisma } from "../../prisma"
+import { connect } from "http2"
 
 export class ProductsController {
     async create(req: Request, res: Response) {
@@ -92,6 +93,9 @@ export class ProductsController {
             const product = await prisma.product.findFirst({
                 where: {
                     id: Number(id)
+                },
+                include: {
+                    genres: true
                 }
             });
             res.status(200).json(product);
@@ -126,6 +130,47 @@ export class ProductsController {
     }
     
     async addCategory(req: Request, res: Response) {
-        res.status(200).send({ message: "addCategory" })
+        const { id } = req.params
+        const { name } = req.body
+        
+        try {
+            const category = await prisma.genre.create({
+                data: {
+                    name
+                }
+            })
+
+            const product = await prisma.product.findUnique({
+                where: {
+                    id: Number(id)
+                },
+                include: {
+                    genres: true
+                }
+            })
+
+            if (!product) {
+                res.status(400).send({ message: "Product not found" });
+                return
+            }
+
+            await prisma.product.update({
+                where: {
+                    id: Number(id)
+                },
+                data: {
+                    genres: {
+                        connect: {
+                            id: category.id
+                        }
+                    }
+                }
+            })
+            
+            res.status(200).json({ product })
+        } catch (error) {
+            console.log(error)
+            res.status(400).send({ message: "Error on add category" })
+        }
     }
 }
