@@ -94,82 +94,82 @@ export class ProductsController {
             res.status(400).send({ message: "Error on find product" })
         }
     }
-    async findCategories(req: Request, res: Response) {
-        try {
-            const { id } = req.params
-            const product = await prisma.product.findUnique({
-                where: {
-                    id: Number(id)
-                },
-                include: {
-                    genres: true
-                }
-            })
+    // async findCategories(req: Request, res: Response) {
+    //     try {
+    //         const { id } = req.params
+    //         const product = await prisma.product.findUnique({
+    //             where: {
+    //                 id: Number(id)
+    //             },
+    //             include: {
+    //                 genres: true
+    //             }
+    //         })
 
-            if (!product) {
-                res.status(400).send({ message: "Product not found" })
-                return
-            }
+    //         if (!product) {
+    //             res.status(400).send({ message: "Product not found" })
+    //             return
+    //         }
 
-            res.status(200).json(product)
-        } catch (error) {
-            console.log(error)
-            res.status(400).send({ message: "Error on find categories" })
-        }
-    }
-    async addCategory(req: Request, res: Response) {
-        try {
-            const { id } = req.params;  // ID do produto
-            const { name } = req.body;  // Nome da nova categoria
+    //         res.status(200).json(product)
+    //     } catch (error) {
+    //         console.log(error)
+    //         res.status(400).send({ message: "Error on find categories" })
+    //     }
+    // }
+    // async addCategory(req: Request, res: Response) {
+    //     try {
+    //         const { id } = req.params;  // ID do produto
+    //         const { name } = req.body;  // Nome da nova categoria
     
-            // Verifica se o produto existe
-            const product = await prisma.product.findUnique({
-                where: {
-                    id: Number(id)
-                }
-            });
+    //         // Verifica se o produto existe
+    //         const product = await prisma.product.findUnique({
+    //             where: {
+    //                 id: Number(id)
+    //             }
+    //         });
     
-            if (!product) {
-                res.status(400).send({ message: "Product not found" });
-                return
-            }
+    //         if (!product) {
+    //             res.status(400).send({ message: "Product not found" });
+    //             return
+    //         }
     
-            // Verifica se a categoria já existe
-            let category = await prisma.genre.findFirst({
-                where: {
-                    name: name
-                }
-            });
+    //         // Verifica se a categoria já existe
+    //         let category = await prisma.genre.findFirst({
+    //             where: {
+    //                 name: name
+    //             }
+    //         });
     
-            // Se não existir, cria a categoria
-            if (!category) {
-                category = await prisma.genre.create({
-                    data: {
-                        name: name
-                    }
-                });
-            }
+    //         // Se não existir, cria a categoria
+    //         if (!category) {
+    //             category = await prisma.genre.create({
+    //                 data: {
+    //                     name: name
+    //                 }
+    //             });
+    //         }
     
-            // Conecta o produto à categoria (gênero)
-            await prisma.product.update({
-                where: {
-                    id: Number(id)
-                },
-                data: {
-                    genres: {
-                        connect: {
-                            id: category.id
-                        }
-                    }
-                }
-            });
+    //         // Conecta o produto à categoria (gênero)
+    //         await prisma.product.update({
+    //             where: {
+    //                 id: Number(id)
+    //             },
+    //             data: {
+    //                 genres: {
+    //                     connect: {
+    //                         id: category.id
+    //                     }
+    //                 }
+    //             }
+    //         });
     
-            res.status(200).send({ message: "Category added to product", category });
-        } catch (error) {
-            console.log(error);
-            res.status(400).send({ message: "Error on add category" });
-        }
-    }
+    //         res.status(200).send({ message: "Category added to product", category });
+    //     } catch (error) {
+    //         console.log(error);
+    //         res.status(400).send({ message: "Error on add category" });
+    //     }
+    // }
     
     
 }
