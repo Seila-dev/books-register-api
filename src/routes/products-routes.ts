@@ -23,4 +23,4 @@ productsRoutes.put("/:id", upload.single('file'), (req, res) => {
     new ProductsController().update(req, res);
 })
 
-export default productsRoutes
+export default productsRoutes;
