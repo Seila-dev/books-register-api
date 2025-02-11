@@ -30,9 +30,6 @@ export class ProductsController {
             const products = await prisma.product.findMany({
                 orderBy: {
                     title: "asc"
-                },
-                include: {
-                    genres: true,
                 }
             })
             res.status(200).json(products)
