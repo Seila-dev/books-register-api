@@ -23,6 +23,7 @@ model Product {
   description    String?
   startedreading String?
   endedreading   String?
+  genreId        Int      @map("genre_id")
   createdAt      DateTime @default(now()) @map("created_at")
   updatedAt      DateTime @updatedAt @map("updated_at")
   genres         Genre[]  @relation("ProductGenres")
