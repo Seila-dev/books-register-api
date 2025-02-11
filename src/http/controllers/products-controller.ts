@@ -27,7 +27,14 @@ export class ProductsController {
 
     async findAll(_: Request, res: Response) {
         try {
-            const productsContainer = await prisma.product.findMany();
+            const productsContainer = await prisma.product.findMany({
+                orderBy: {
+                    title: 'desc'
+                },
+                include: {
+                    genres: true
+                }
+            });
             res.status(200).json(productsContainer);
         } catch (error) {
             console.log(error);
