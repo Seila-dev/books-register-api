@@ -26,7 +26,8 @@ export class ProductsController {
     }
 
     async findAll(req: Request, res: Response) {
-        console.log(req.body)
+        // const data = req.body
+        // res.status(200).json(data)
         try {
             const productsContainer = await prisma.product.findMany({
                 orderBy: {
