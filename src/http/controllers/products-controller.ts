@@ -27,12 +27,13 @@ export class ProductsController {
 
     async findAll(req: Request, res: Response) {
         try {
-            const products = await prisma.product.findMany({
-                orderBy: {
-                    title: "asc"
-                }
-            })
-            res.status(200).json(products)
+            // const products = await prisma.product.findMany({
+            //     orderBy: {
+            //         title: "asc"
+            //     }
+            // })
+            // res.status(200).json(products)
+            res.status(200).send({message: "estou funcionando"})
         } catch (error) {
             console.log(error)
             res.status(400).send({ message: "Server Error" })
