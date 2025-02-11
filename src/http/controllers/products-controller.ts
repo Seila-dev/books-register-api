@@ -126,65 +126,6 @@ export class ProductsController {
     }
     
     async addCategory(req: Request, res: Response) {
-        try {
-            const { id } = req.params;  // ID do produto
-            const { names } = req.body;  // Lista de nomes de gêneros para adicionar
-        
-            // Verifica se o produto existe
-            const product = await prisma.product.findUnique({
-                where: {
-                    id: Number(id)
-                }
-            });
-        
-            if (!product) {
-                res.status(400).send({ message: "Product not found" });
-                return
-            }
-        
-            // Cria ou conecta cada gênero
-            const genresToConnect = [];
-    
-            for (const name of names) {
-                let genre = await prisma.genre.findFirst({
-                    where: {
-                        name: name
-                    }
-                });
-    
-                if (!genre) {
-                    // Se o gênero não existir, cria o gênero
-                    genre = await prisma.genre.create({
-                        data: {
-                            name: name
-                        }
-                    });
-                }
-    
-                genresToConnect.push({ id: genre.id });
-            }
-    
-            // Agora conecta os gêneros ao produto
-            await prisma.product.update({
-                where: {
-                    id: Number(id)
-                },
-                data: {
-                    genres: {
-                        connect: genresToConnect  // Adiciona todos os gêneros de uma vez
-                    }
-                }
-            });
-        
-            res.status(200).json(genresToConnect);
-        } catch (error) {
-            console.log(error);
-            res.status(400).send({ message: "Error on add categories" });
-        }
+        res.status(200).send({ message: "addCategory" })
     }
-    
-    
-    
-    
-    
 }
