@@ -102,31 +102,33 @@ export class ProductsController {
     }
     async findCategories(req: Request, res: Response) {
         try {
-            const { id } = req.params
+            const { id } = req.params;
+    
             const product = await prisma.product.findUnique({
                 where: {
                     id: Number(id)
                 },
                 include: {
-                    genres: true
+                    genres: true  // Inclui todos os gêneros associados ao produto
                 }
-            })
-
+            });
+    
             if (!product) {
-                res.status(400).send({ message: "Product not found" })
-                return
+                res.status(400).send({ message: "Produto não encontrado" });
+                return;
             }
-
-            res.status(200).json(product)
+    
+            res.status(200).json(product.genres);  // Retorna todos os gêneros do produto
         } catch (error) {
-            console.log(error)
-            res.status(400).send({ message: "Error on find categories" })
+            console.log(error);
+            res.status(400).send({ message: "Erro ao buscar gêneros" });
         }
     }
+    
     async addCategory(req: Request, res: Response) {
         try {
             const { id } = req.params;  // ID do produto
-            const { name } = req.body;  // Nome da nova categoria
+            const { names } = req.body;  // Lista de nomes de gêneros a serem adicionados ao produto
     
             // Verifica se o produto existe
             const product = await prisma.product.findUnique({
@@ -136,46 +138,44 @@ export class ProductsController {
             });
     
             if (!product) {
-                res.status(400).send({ message: "Product not found" });
-                return
+                res.status(400).send({ message: "Produto não encontrado" });
+                return;
             }
     
-            // Verifica se a categoria já existe
-            let category = await prisma.genre.findFirst({
-                where: {
-                    name: name
-                }
-            });
+            // Criar ou conectar os gêneros
+            const genresToConnect = await Promise.all(
+                names.map(async (name: string) => {
+                    let genre = await prisma.genre.findFirst({
+                        where: { name: name }
+                    });
     
-            // Se não existir, cria a categoria
-            if (!category) {
-                category = await prisma.genre.create({
-                    data: {
-                        name: name
+                    if (!genre) {
+                        genre = await prisma.genre.create({
+                            data: { name: name }
+                        });
                     }
-                });
-            }
     
-            // Conecta o produto à categoria (gênero)
+                    return genre;
+                })
+            );
+    
+            // Conectar os gêneros ao produto
             await prisma.product.update({
-                where: {
-                    id: Number(id)
-                },
+                where: { id: Number(id) },
                 data: {
                     genres: {
-                        connect: {
-                            id: category.id
-                        }
+                        connect: genresToConnect.map(genre => ({ id: genre.id }))
                     }
                 }
             });
     
-            res.status(200).send({ message: "Category added to product", category });
+            res.status(200).send({ message: "Gêneros adicionados ao produto", genres: genresToConnect });
         } catch (error) {
             console.log(error);
-            res.status(400).send({ message: "Error on add category" });
+            res.status(400).send({ message: "Erro ao adicionar gêneros" });
         }
     }
+    
     
     
 }
