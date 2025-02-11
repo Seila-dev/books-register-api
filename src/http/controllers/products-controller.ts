@@ -28,9 +28,6 @@ export class ProductsController {
     async findAll(_: Request, res: Response) {
         try {
             const products = await prisma.product.findMany({
-                orderBy: {
-                    title: "asc"
-                },
                 include: {
                     genres: true
                 }
