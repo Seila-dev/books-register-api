@@ -3,20 +3,12 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "cockroachdb"
   url      = env("DATABASE_URL")
 }
 
-model Genre {
-  id       Int       @id @default(autoincrement())
-  name     String
-  products Product[] @relation("ProductGenres")
-
-  @@map("genres")
-}
-
 model Product {
-  id             Int      @id @default(autoincrement())
+  id             Int       @id @default(sequence())
   image          String
   title          String
   stars          Int?
@@ -24,15 +16,36 @@ model Product {
   startedreading String?
   endedreading   String?
   genreId        Int?      @map("genre_id")
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
-  genres         Genre[]  @relation("ProductGenres")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+  genres         ProductGenre[] // Relacionamento com a tabela intermediária
 
   @@map("products")
 }
 
+model Genre {
+  id       Int             @id @default(sequence())
+  name     String
+  products ProductGenre[]  // Relacionamento com a tabela intermediária
+
+  @@map("genres")
+}
+
+model ProductGenre {
+  productId Int
+  genreId   Int
+
+  product   Product @relation(fields: [productId], references: [id])
+  genre     Genre   @relation(fields: [genreId], references: [id])
+
+  @@id([productId, genreId])  // Chave primária composta
+  @@map("product_genres")     // Nome da tabela intermediária
+}
+
+
+
 model User {
-  id           Int      @id @default(autoincrement())
+  id           Int      @id @default(sequence())
   email        String   @unique
   createdAt    DateTime @default(now()) @map("created_at")
   firstName    String   @map("first_name")
