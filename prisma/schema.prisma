@@ -7,6 +7,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum crdb_internal_region {
+  gcp_southamerica_east1 @map("gcp-southamerica-east1")
+}
+
 model Product {
   id             Int       @id @default(sequence())
   image          String
@@ -18,7 +22,7 @@ model Product {
   genreId        Int?      @map("genre_id")
   createdAt      DateTime  @default(now()) @map("created_at")
   updatedAt      DateTime  @updatedAt @map("updated_at")
-  genres         ProductGenre[] // Relacionamento com a tabela intermediária
+  genres         ProductGenre[]
 
   @@map("products")
 }
@@ -26,7 +30,7 @@ model Product {
 model Genre {
   id       Int             @id @default(sequence())
   name     String
-  products ProductGenre[]  // Relacionamento com a tabela intermediária
+  products ProductGenre[]
 
   @@map("genres")
 }
@@ -38,9 +42,9 @@ model ProductGenre {
   product   Product @relation(fields: [productId], references: [id])
   genre     Genre   @relation(fields: [genreId], references: [id])
 
-  @@id([productId, genreId])  // Chave primária composta
-  @@map("product_genres")     // Nome da tabela intermediária
-}
+  @@id([productId, genreId])
+  @@map("product_genres") 
+} 
 
 
 
