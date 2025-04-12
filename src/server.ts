@@ -1,10 +1,7 @@
 import express from "express";
 import path from 'path';
 import "dotenv/config"
-// import itemsPool from '../DBConfig'
 import { app } from "./app";
-import productsRoutes from "./routes/products-routes";
-import categoriesRoutes from "./routes/categories-routes";
 
 const port = 3000;
 
@@ -13,8 +10,4 @@ app.use('/public', express.static(publicPath));
 
 app.listen(port, () => {
     console.log(`servidor aberto na porta ${port}`);
-    console.log('DATABASE_URL:', process.env.DATABASE_URL);
 })
-
-app.use('/products', productsRoutes)
-app.use('/categories', categoriesRoutes)
