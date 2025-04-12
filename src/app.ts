@@ -1,16 +1,9 @@
 import express from 'express'
 import cors from 'cors'
-import bodyParser from "body-parser";
+import 'dotenv/config'
 
 export const app = express()
 
-app.use(cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'DELETE', 'PUT'], 
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true, 
-}));
-
-app.use(bodyParser.json());
+app.use(cors())
 
 app.use(express.json());
