@@ -1,36 +1,42 @@
-import multer from 'multer';
-import path from 'path';
-import crypto from 'crypto';
-import { Request, Response } from 'express';
+import { v2 as cloudinary } from 'cloudinary';
 
-const uploadFolder = path.resolve(__dirname, '..', '..', 'uploads');
+(async function() {
 
-export default {
-  directory: uploadFolder,
-  storage: multer.diskStorage({
-    destination: uploadFolder,
-    filename(request: Request, file, callback) {
-      const fileHash = crypto.randomBytes(10).toString('hex');
-      const fileName = `${fileHash}-${file.originalname}`;
-
-      return callback(null, fileName);
-    },
-  }),
-  limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB
-  },
-  fileFilter: (req: Request, file: any , cb: any) => {
-    const allowedMimes = [
-      'image/jpeg',
-      'image/pjpeg',
-      'image/png',
-      'image/gif',
-    ];
-
-    if (allowedMimes.includes(file.mimetype)) {
-      cb(null, true);
-    } else {
-      cb(new Error('Tipo de arquivo inválido.'));
-    }
-  },
-};
+    // Configuration
+    cloudinary.config({ 
+        cloud_name: 'dqd3wgjba', 
+        api_key: '237841915261381', 
+        api_secret: 'aJXHB5Vfh7-liswVhJw4Vk-m_uI' // Click 'View API Keys' above to copy your API secret
+    });
+    
+    // Upload an image
+     const uploadResult = await cloudinary.uploader
+       .upload(
+           'https://res.cloudinary.com/demo/image/upload/getting-started/shoes.jpg', {
+               public_id: 'shoes',
+           }
+       )
+       .catch((error) => {
+           console.log(error);
+       });
+    
+    console.log(uploadResult);
+    
+    // Optimize delivery by resizing and applying auto-format and auto-quality
+    const optimizeUrl = cloudinary.url('shoes', {
+        fetch_format: 'auto',
+        quality: 'auto'
+    });
+    
+    console.log(optimizeUrl);
+    
+    // Transform the image: auto-crop to square aspect_ratio
+    const autoCropUrl = cloudinary.url('shoes', {
+        crop: 'auto',
+        gravity: 'auto',
+        width: 500,
+        height: 500,
+    });
+    
+    console.log(autoCropUrl);    
+})();

@@ -6,10 +6,11 @@ import usersRoutes from "./routes/users-routes";
 import bookRouter from "./routes/books-routes";
 import categoryRouter from "./routes/categories-routes";
 
+import cloudinary from 'cloudinary'
+
 const port = 3000;
 
-const publicPath = path.join(process.cwd(), 'public'); 
-app.use('/public', express.static(publicPath));
+// const publicPath = path.join(process.cwd(), 'public'); 
 
 app.listen(port, () => {
     console.log(`servidor aberto na porta ${port}`);

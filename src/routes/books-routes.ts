@@ -2,10 +2,9 @@ import { Router } from 'express';
 import multer from 'multer';
 import BookController from '../http/controllers/books-controller';
 import { authMiddleware } from '../middlewares/auth';
-import multerConfig from '../config/Multer';
+import { uploadConfig } from '../config/Cloudinary';
 
 const bookRouter = Router();
-const upload = multer(multerConfig);
 
 // Aplica o middleware de autenticação em todas as rotas
 bookRouter.use(authMiddleware);
@@ -22,13 +21,13 @@ bookRouter.get(
 
 bookRouter.post(
     '/', 
-    upload.single('coverImage'), 
+    uploadConfig.single('coverImage'), 
     BookController.create
 )
 
 bookRouter.put(
     '/:id', 
-    upload.single('coverImage'), 
+    uploadConfig.single('coverImage'), 
     BookController.update
 )
 

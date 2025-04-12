@@ -14,7 +14,8 @@ class BookController {
         categoryIds,
       } = request.body;
 
-      const coverImage = request.file ? request.file.filename : undefined;
+      // Com Cloudinary, a imagem upload já fornece a URL completa
+      const coverImage = request.file ? request.file.path : undefined;
       const userId = request.user.id;
 
       const parsedStartDate = startDate ? new Date(startDate) : undefined;
@@ -80,7 +81,8 @@ class BookController {
         categoryIds,
       } = request.body;
 
-      const coverImage = request.file ? request.file.filename : undefined;
+      // Com Cloudinary, a imagem upload já fornece a URL completa
+      const coverImage = request.file ? request.file.path : undefined;
       const userId = request.user.id;
 
       const parsedStartDate = startDate === '' 
