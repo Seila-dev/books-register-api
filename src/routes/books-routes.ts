@@ -2,7 +2,7 @@ import { Router } from 'express';
 import multer from 'multer';
 import BookController from '../http/controllers/books-controller';
 import { authMiddleware } from '../middlewares/auth';
-import { uploadConfig } from '../config/Cloudinary';
+import { uploadConfig } from '../config/cloudn';
 
 const bookRouter = Router();
 
