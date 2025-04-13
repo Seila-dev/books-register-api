@@ -1,5 +1,5 @@
 import { PrismaClient, Book } from '@prisma/client';
-import { deleteImage, extractPublicId } from '../config/Cloudinary';
+import { cloudinary, deleteImage, extractPublicId } from '../config/cloudn';
 
 const prisma = new PrismaClient();
 
@@ -132,10 +132,14 @@ class BookService {
       throw new Error('Livro não encontrado');
     }
 
-    if (coverImage && book.coverImage) {
+    if (coverImage && book.coverImage && coverImage !== book.coverImage) {
       const publicId = extractPublicId(book.coverImage);
-      await deleteImage(publicId);
-    }
+      try {
+        await deleteImage(publicId);
+      } catch (err) {
+        console.warn('Erro ao excluir imagem do Cloudinary:', err);
+      }
+    }    
 
     if (categoryIds) {
       await prisma.categoriesOnBooks.deleteMany({
