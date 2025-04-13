@@ -209,6 +209,30 @@ class BookService {
     return true;
   }
 
+  async updateBookRating(id: string, rating: number, userId: number): Promise<Book> {
+    const book = await prisma.book.findFirst({
+      where: {
+        id,
+        userId,
+      },
+    });
+
+    if (!book) {
+      throw new Error('Livro não encontrado');
+    }
+
+    const updatedBook = await prisma.book.update({
+      where: {
+        id,
+      },
+      data: {
+        rating,
+      },
+    });
+
+    return updatedBook;
+  }
+
   async getBooksByCategory(categoryId: string, userId: number) {
     const books = await prisma.book.findMany({
       where: {

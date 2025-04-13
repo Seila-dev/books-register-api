@@ -138,6 +138,25 @@ class BookController {
     }
   }
 
+  async updateRating(request: Request, response: Response) {
+    try {
+      const { id } = request.params;
+      const { rating } = request.body; // A nota do livro (deve ser um número de 1 a 5)
+      const userId = request.user.id;
+
+      if (rating < 1 || rating > 5) {
+        throw new Error('A avaliação deve ser entre 1 e 5 estrelas');
+      }
+
+      const updatedBook = await BookService.updateBookRating(id, rating, userId);
+
+      response.json(updatedBook);
+    } catch (error) {
+      handleError(error as Error, response);
+    }
+  }
+
+
   async byCategory(request: Request, response: Response) {
     try {
       const { categoryId } = request.params;

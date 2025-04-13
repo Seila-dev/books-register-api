@@ -25,6 +25,11 @@ bookRouter.post(
     BookController.create
 )
 
+bookRouter.patch(
+    '/:id/rating', 
+    BookController.updateRating
+  );
+
 bookRouter.put(
     '/:id', 
     uploadConfig.single('coverImage'), 
