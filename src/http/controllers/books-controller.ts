@@ -78,28 +78,40 @@ class BookController {
         rating,
         startDate,
         finishDate,
-        categoryIds,
       } = request.body;
 
-      // Com Cloudinary, a imagem upload já fornece a URL completa
-      const coverImage = request.file ? request.file.path : undefined;
       const userId = request.user.id;
+      const coverImage = request.file ? request.file.path : undefined;
 
-      const parsedStartDate = startDate === '' 
-        ? null 
-        : startDate 
-          ? new Date(startDate) 
+      const parsedStartDate = startDate === ''
+        ? null
+        : startDate
+          ? new Date(startDate)
           : undefined;
-          
-      const parsedFinishDate = finishDate === '' 
-        ? null 
-        : finishDate 
-          ? new Date(finishDate) 
+
+      const parsedFinishDate = finishDate === ''
+        ? null
+        : finishDate
+          ? new Date(finishDate)
           : undefined;
-          
-      const parsedRating = rating !== undefined 
-        ? parseInt(rating, 10) 
+
+      const parsedRating = rating !== undefined
+        ? parseInt(rating, 10)
         : undefined;
+
+      // Tratamento robusto de categoryIds (string ou array)
+      let parsedCategoryIds: string[] | undefined = undefined;
+      if (request.body.categoryIds) {
+        if (typeof request.body.categoryIds === 'string') {
+          try {
+            parsedCategoryIds = JSON.parse(request.body.categoryIds);
+          } catch {
+            parsedCategoryIds = request.body.categoryIds.split(',');
+          }
+        } else if (Array.isArray(request.body.categoryIds)) {
+          parsedCategoryIds = request.body.categoryIds;
+        }
+      }
 
       const book = await BookService.updateBook({
         id,
@@ -110,7 +122,7 @@ class BookController {
         startDate: parsedStartDate,
         finishDate: parsedFinishDate,
         userId,
-        categoryIds: categoryIds ? JSON.parse(categoryIds) : undefined,
+        categoryIds: parsedCategoryIds,
       });
 
       response.json(book);
