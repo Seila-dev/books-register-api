@@ -42,6 +42,13 @@ class CategoryService {
       where: {
         userId,
       },
+      include: {
+        books: {
+          include: {
+            book: true
+          },
+        },
+      },
       orderBy: {
         name: 'asc',
       },
