@@ -113,8 +113,6 @@ class BookController {
         }
       }
 
-      console.log('RAW request.body.categoryIds:', request.body.categoryIds);
-
       const book = await BookService.updateBook({
         id,
         title,

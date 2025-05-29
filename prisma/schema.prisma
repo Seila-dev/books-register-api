@@ -35,9 +35,9 @@
   }
 
   model CategoriesOnBooks {
-    book       Book     @relation(fields: [bookId], references: [id])
+    book       Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
     bookId     String
-    category   Category @relation(fields: [categoryId], references: [id])
+    category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
     categoryId String
     assignedAt DateTime @default(now())
 
