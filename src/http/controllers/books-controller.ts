@@ -45,7 +45,9 @@ class BookController {
   async index(request: Request, response: Response) {
     try {
       const userId = request.user.id;
-      const books = await BookService.getAllBooks(userId);
+      const search = request.query.search as string | undefined;
+
+      const books = await BookService.getAllBooks(userId, search);
 
       response.json(books);
     } catch (error) {

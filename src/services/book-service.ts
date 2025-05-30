@@ -68,10 +68,16 @@ class BookService {
     return book;
   }
 
-  async getAllBooks(userId: number) {
+  async getAllBooks(userId: number, search?: string) {
     const books = await prisma.book.findMany({
       where: {
         userId,
+        ...(search && {
+          title: {
+            contains: search,
+            mode: 'insensitive'
+          },
+        }),
       },
       include: {
         categories: {
