@@ -1,11 +1,15 @@
 import express from 'express'
 import cors from 'cors'
 import 'dotenv/config'
-import googleAuthRouter from './routes/google-auth-routes'
 
 export const app = express()
 
-app.use(cors())
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'https://books-register.vercel.app',
+  ],
+  credentials: true,
+}));
 
 app.use(express.json());
-app.use(googleAuthRouter)

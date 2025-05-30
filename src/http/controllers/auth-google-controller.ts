@@ -7,6 +7,7 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 export const googleAuth = async (req: Request, res: Response) => {
   const { token: googleToken } = req.body;
+    console.log('[GOOGLE AUTH REQUEST]', req.body);
 
   if (!googleToken) {
     res.status(400).json({ message: 'Missing Google token' });

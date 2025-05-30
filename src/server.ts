@@ -5,6 +5,7 @@ import { app } from "./app";
 import usersRoutes from "./routes/users-routes";
 import bookRouter from "./routes/books-routes";
 import categoryRouter from "./routes/categories-routes";
+import googleAuthRouter from './routes/google-auth-routes'
 
 import cloudinary from 'cloudinary'
 
@@ -12,10 +13,11 @@ const port = 3000;
 
 // const publicPath = path.join(process.cwd(), 'public'); 
 
-app.listen(port, () => {
-    console.log(`servidor aberto na porta ${port}`);
-})
-
+app.use(googleAuthRouter)
 app.use("/users", usersRoutes)
 app.use('/books', bookRouter)
 app.use('/categories', categoryRouter);
+
+app.listen(port, () => {
+    console.log(`servidor aberto na porta ${port}`);
+})
