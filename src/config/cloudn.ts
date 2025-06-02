@@ -19,7 +19,7 @@ const storage = new CloudinaryStorage({
   params: async (req: Request, file: Express.Multer.File) => {
     return {
       folder: 'book-covers',
-      allowed_formats: ['jpg', 'png'],
+      allowed_formats: ['jpg', 'png', 'gif', 'webp'],
       public_id: `${Date.now()}-${file.originalname.split('.')[0]}`,
     };
   },
@@ -36,6 +36,7 @@ export const uploadConfig = multer({
       'image/pjpeg',
       'image/png',
       'image/gif',
+      'image/webp',
     ];
 
     if (allowedMimes.includes(file.mimetype)) {
