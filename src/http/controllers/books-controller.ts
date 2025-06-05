@@ -183,6 +183,23 @@ class BookController {
       handleError(error as Error, response);
     }
   }
+
+  async markAsRead(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const userId = req.user.id;
+
+      const updatedBook = await BookService.updateBook({
+        id,
+        userId,
+        finishDate: new Date(),
+      });
+
+      res.json(updatedBook);
+    } catch (error) {
+      handleError(error as Error, res);
+    }
+  }
 }
 
 export default new BookController();

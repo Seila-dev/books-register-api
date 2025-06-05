@@ -8,6 +8,7 @@ import categoryRouter from "./routes/categories-routes";
 import googleAuthRouter from './routes/google-auth-routes'
 
 import cloudinary from 'cloudinary'
+import noteRoutes from "./routes/notes-services";
 
 const port = 3000;
 
@@ -17,6 +18,7 @@ app.use(googleAuthRouter)
 app.use("/users", usersRoutes)
 app.use('/books', bookRouter)
 app.use('/categories', categoryRouter);
+app.use('/notes', noteRoutes);
 
 app.listen(port, () => {
     console.log(`servidor aberto na porta ${port}`);

@@ -30,6 +30,11 @@ bookRouter.patch(
     BookController.updateRating
   );
 
+bookRouter.patch(
+    '/:id/mark-as-read',
+    BookController.markAsRead
+)
+
 bookRouter.put(
     '/:id', 
     uploadConfig.single('coverImage'), 
