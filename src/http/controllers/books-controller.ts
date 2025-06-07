@@ -80,6 +80,7 @@ class BookController {
         rating,
         startDate,
         finishDate,
+        isFavorite
       } = request.body;
 
       const userId = request.user.id;
@@ -99,6 +100,10 @@ class BookController {
 
       const parsedRating = rating !== undefined
         ? parseInt(rating, 10)
+        : undefined;
+
+      const parsedIsFavorite = typeof isFavorite === 'string'
+        ? isFavorite === 'true'
         : undefined;
 
       // Tratamento robusto de categoryIds (string ou array)
@@ -125,6 +130,7 @@ class BookController {
         finishDate: parsedFinishDate,
         userId,
         categoryIds: parsedCategoryIds,
+        isFavorite: parsedIsFavorite
       });
 
       response.json(book);
