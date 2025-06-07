@@ -23,6 +23,7 @@ interface UpdateBookDTO {
   startDate?: Date | null;
   finishDate?: Date | null;
   userId: number;
+  isFavorite?: boolean;
   categoryIds?: string[];
 }
 
@@ -126,6 +127,7 @@ class BookService {
     finishDate,
     userId,
     categoryIds,
+    isFavorite
   }: UpdateBookDTO) {
     const book = await prisma.book.findFirst({
       where: {
@@ -175,6 +177,7 @@ class BookService {
         rating,
         startDate,
         finishDate,
+        isFavorite
       },
       include: {
         categories: {
